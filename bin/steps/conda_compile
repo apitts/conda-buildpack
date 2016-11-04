@@ -1,9 +1,26 @@
+# determine Python version
+
+# default python version is 2
+PYTHON_VERSION="2"
+
+if [ -f runtime.txt ]; then
+    PYTHON_RUNTIME=$(cat runtime.txt)
+    PYTHON_VERSION=`echo $PYTHON_RUNTIME | cut -d \- -f 2 | cut -d . -f 1`    
+fi
+
+
 if [ ! -d /app/.heroku/miniconda ]; then
     puts-step "Preparing Python/Miniconda Environment"
-    curl -Os https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh
-    bash Miniconda-latest-Linux-x86_64.sh  -p /app/.heroku/miniconda/ -b | indent
-    rm -fr Miniconda-latest-Linux-x86_64.sh
-
+    bash_script="Miniconda${PYTHON_VERSION}-latest-Linux-x86_64.sh"
+    command="curl -Os https://repo.continuum.io/miniconda/${bash_script}"
+    eval $command
+    command="chmod +x ${bash_script}"
+    eval $command
+    command="${bash_script} -p /app/.heroku/miniconda/ -b | indent"
+    eval $command
+    command="rm -fr ${bash_script}"
+    eval $command
+    
     conda install pip --yes | indent
 fi
 
