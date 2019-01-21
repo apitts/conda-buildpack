@@ -26,12 +26,12 @@ conda install nomkl --yes
 
 if [ -f conda-requirements.txt ]; then
     puts-step "Installing dependencies using Conda"
-    conda install --no-deps --file conda-requirements.txt --yes | indent
+    conda install -c conda-forge -c ostrokach-forge --no-deps --file conda-requirements.txt --yes | indent
 fi
 
 if [ -f requirements.txt ]; then
     puts-step "Installing dependencies using Pip"
-    pip install -r requirements.txt  --exists-action=w --allow-all-external | indent
+    pip install -r requirements.txt  --exists-action=w | indent
 fi
 
 # Clean up the installation environment .
